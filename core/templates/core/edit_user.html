@@ -1,0 +1,15 @@
+<h2>Edit User: {{ user_obj.username }}</h2>
+<form method="POST">
+  {% csrf_token %}
+  <label>Email:</label><br />
+  <input type="text" name="email" value="{{ user_obj.email }}" /><br /><br />
+  <label>Wallet Balance:</label><br />
+  <input
+    type="number"
+    step="0.01"
+    name="wallet_balance"
+    value="{{ user_obj.wallet_balance }}"
+  /><br /><br />
+  <button type="submit">Save</button>
+</form>
+<a href="{% url 'admin_dashboard' %}">Back</a>
