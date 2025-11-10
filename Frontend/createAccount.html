@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create Account • Bulldog Bookie</title>
+  <link rel="stylesheet" href="createAccount.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="logo">Bulldog Bookie</div>
+    <nav class="nav">
+      <a href="homepage.html">Home</a>
+      <a href="events.html">Events</a>
+      <a href="wallet.html">Wallet</a>
+      <a href="wagers.html">Wagers</a>
+      <a href="admin.html">Admin</a>
+      <a href="login.html" class="login-btn">Login</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="auth-container" aria-labelledby="create-title">
+      <h1 id="create-title">Create Account</h1>
+      <p>Create your Bulldog Bookie account to get started.</p>
+
+      <form id="createForm" action="login.html" method="post" novalidate>
+        <div class="form-group">
+          <label for="firstName">First Name</label>
+          <input id="firstName" name="firstName" type="text" autocomplete="given-name" required />
+        </div>
+
+        <div class="form-group">
+          <label for="lastName">Last Name</label>
+          <input id="lastName" name="lastName" type="text" autocomplete="family-name" required />
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" autocomplete="email" required />
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            autocomplete="new-password"
+            required
+            pattern="(?=.*[A-Za-z])(?=.*\d).{8,}"
+            title="At least 8 characters, including a letter and a number."
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="confirm">Confirm Password</label>
+          <input
+            id="confirm"
+            name="confirm"
+            type="password"
+            autocomplete="new-password"
+            required
+          />
+        </div>
+
+        <div class="form-group checkbox">
+          <label>
+            <input type="checkbox" id="tos" name="tos" required />
+            I agree to the Honor Code and Terms of Service.
+          </label>
+        </div>
+
+        <button type="submit" class="btn">Create Account</button>
+        <p>Already have an account?</p>
+        <button type="button" class="login-btn" onclick="window.location.href='login.html'">Login</button>
+      </form>
+    </section>
+  </main>
+</body>
+</html>

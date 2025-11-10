@@ -1,0 +1,211 @@
+:root {
+  --midnight: #0b0f19;
+  --deep-navy: #111727;
+  --royal-blue: #0077ff;
+  --casino-red: #e53935;
+  --text-light: #f5f7fa;
+  --text-muted: #9aa3b7;
+  --border: #1c2333;
+  --card-bg: #131a2b;
+  --shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+}
+
+body {
+  margin: 0;
+  font-family: "Inter", Arial, sans-serif;
+  background: linear-gradient(180deg, var(--midnight), var(--deep-navy));
+  color: var(--text-light);
+}
+
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--deep-navy);
+  padding: 1rem 2rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.logo {
+  color: var(--royal-blue);
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.nav a {
+  color: var(--text-light);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.nav a:hover {
+  color: var(--royal-blue);
+}
+
+.login-btn {
+  background-color: var(--casino-red);
+  color: var(--text-light);
+  font-weight: 600;
+  padding: 0.6rem 1.1rem;
+  border-radius: 20px;
+  box-shadow: 0 0 10px rgba(229, 57, 53, 0.3);
+  transition: background-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+}
+
+.login-btn:hover {
+  background-color: #ff5252;
+  color: var(--royal-blue);
+  box-shadow: 0 0 15px rgba(255, 82, 82, 0.5);
+}
+
+
+.container {
+  max-width: 1100px;
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+
+
+.auth-container {
+  max-width: 480px;
+  margin: 5rem auto;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  padding: 2rem;
+}
+
+.auth-container h1 {
+  text-align: center;
+  margin: 0 0 0.25rem 0;
+  font-size: 1.9rem;
+  color: var(--text-light);
+  letter-spacing: 0.2px;
+}
+
+.auth-container > p {
+  text-align: center;
+  margin: 0 0 2rem 0;
+  color: var(--text-muted);
+}
+
+
+#loginForm {
+  display: grid;
+  gap: 1rem;
+}
+
+.form-group {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: var(--text-light);
+}
+
+.form-group input[type="email"],
+.form-group input[type="password"] {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: #0e1522;
+  color: var(--text-light);
+  padding: 0.85rem 0.9rem;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.form-group input:focus {
+  border-color: var(--royal-blue);
+  box-shadow: 0 0 0 3px rgba(0, 119, 255, 0.15);
+}
+
+
+.btn {
+  display: inline-block;
+  background-color: var(--text-light);
+  color: var(--deep-navy);
+  font-weight: 700;
+  padding: 0.9rem 1.2rem;
+  border: none;
+  border-radius: 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn:hover {
+  background-color: var(--mint-light, #e6e6e6);
+  color: var(--royal-blue);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.create-btn {
+  display: inline-block;
+  background-color: var(--casino-red);
+  color: var(--text-light);
+  font-weight: 600;
+  padding: 0.9rem 1.6rem;
+  border: none;
+  border-radius: 24px;
+  font-size: 1.05rem;
+  box-shadow: 0 0 10px rgba(229, 57, 53, 0.3);
+  text-align: center;
+  width: fit-content;
+  margin: 1rem auto 0 auto;
+  cursor: pointer;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease, transform 0.05s ease;
+}
+
+.create-btn:hover {
+  background-color: #ff5252;
+  color: var(--royal-blue);
+  box-shadow: 0 0 18px rgba(255, 82, 82, 0.5);
+}
+
+.create-btn:active {
+  transform: translateY(1px);
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .auth-container {
+    margin: 3rem 1rem;
+    padding: 1.5rem;
+  }
+
+  .auth-container h1 {
+    font-size: 1.6rem;
+  }
+
+  .nav {
+    gap: 1rem;
+  }
+}
+
+.auth-container p {
+  text-align: center;
+  margin: 1rem 0 0 0;
+}

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login • Bulldog Bookie</title>
+  <link rel="stylesheet" href="login.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="logo">Bulldog Bookie</div>
+    <nav class="nav">
+      <a href="homepage.html">Home</a>
+      <a href="events.html">Events</a>
+      <a href="wallet.html">Wallet</a>
+      <a href="wagers.html">Wagers</a>
+      <a href="admin.html">Admin</a>
+      <a href="login.html" class="login-btn">Login</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="auth-container" aria-labelledby="login-title">
+      <h1 id="login-title">Login</h1>
+      <p>Welcome back to Bulldog Bookie.</p>
+
+      <form id="loginForm" action="homepage.html" method="post" novalidate>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" autocomplete="email" required />
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" autocomplete="current-password" required />
+        </div>
+
+        <button type="submit" class="btn">Login</button>
+
+        <p>Don't have an account?</p>
+        <button type="button" class="create-btn" onclick="window.location.href='createAccount.html'">Create Account</button>
+      </form>
+    </section>
+  </main>
+</body>
+</html>
