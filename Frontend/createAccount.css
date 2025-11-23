@@ -1,75 +1,105 @@
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+img, svg, video { display: block; max-width: 100%; }
+button, input, select, textarea { font: inherit; }
+
 :root {
   --midnight: #0b0f19;
-  --deep-navy: #111727;
+  --deep-navy: #111a28;
   --royal-blue: #0077ff;
-  --casino-red: #e53935;
-  --text-light: #f5f7fa;
-  --text-muted: #9aa3b7;
-  --border: #1c2333;
-  --card-bg: #131a2b;
-  --shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+  --casino-red: #e02626;
+  --text-light: #f8f9fa;
+  --text-muted: #aeb7c1;
+  --border: #1f2633;
+  --card-bg: #101823;
+  --card-glow: rgba(0, 119, 255, 0.12);
+  --shadow: 0 10px 30px rgba(0,0,0,0.3);
+  --maxw: 1100px;
+  --radius: 18px;
+  --gap: 36px;
+  --btn-bg: var(--casino-red);
+  --btn-bg-hover: #b31f1f;
+  --btn-text: #ffffff;
+  --link: var(--royal-blue);
+  --link-hover: #339cff;
 }
 
+html { scroll-behavior: smooth; }
+
 body {
-  margin: 0;
-  font-family: "Inter", Arial, sans-serif;
-  background: linear-gradient(180deg, var(--midnight), var(--deep-navy));
+  font-family: "Poppins", "Segoe UI", sans-serif;
+  background: linear-gradient(180deg, #050810 0%, var(--midnight) 100%);
   color: var(--text-light);
+  line-height: 1.6;
+  padding: 2rem;
+}
+
+a { color: var(--link); text-decoration: none; }
+a:hover { color: var(--link-hover); text-decoration: underline; }
+
+.container {
+  width: min(100% - 4rem, var(--maxw));
+  margin-inline: auto;
 }
 
 .header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  backdrop-filter: blur(8px);
+  background: rgba(15, 20, 32, 0.9);
+  border-bottom: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem 2rem;
+  margin-bottom: 2rem;
+}
+
+.header .container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: var(--deep-navy);
-  padding: 1rem 2rem;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  padding: 0.75rem 0;
+  width: 98%;
+  margin: 0 auto;
 }
 
 .logo {
-  color: var(--royal-blue);
   font-size: 1.5rem;
-  font-weight: 700;
-  text-decoration: none;
+  font-weight: 800;
+  color: var(--royal-blue);
+  padding-left: 0.25rem;
 }
 
 .nav {
   display: flex;
+  justify-content: flex-end;
   align-items: center;
-  gap: 1.5rem;
+  gap: 1rem;
 }
 
 .nav a {
-  color: var(--text-light);
-  text-decoration: none;
+  color: var(--text-muted);
   font-weight: 500;
   transition: color 0.2s ease;
 }
 
 .nav a:hover {
-  color: var(--royal-blue);
-}
-
-.login-btn {
-  background-color: var(--casino-red);
   color: var(--text-light);
+}
+
+.nav .btn {
+  background: var(--casino-red);
+  color: #fff;
   font-weight: 600;
-  padding: 0.6rem 1.1rem;
-  border-radius: 20px;
-  box-shadow: 0 0 10px rgba(229, 57, 53, 0.3);
-  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  padding: 0.5rem 1.2rem;
+  border-radius: 999px;
+  box-shadow: 0 0 15px rgba(214, 40, 40, 0.25);
+  transition: 0.2s ease;
 }
 
-.login-btn:hover {
-  background-color: #ff5252;
-  box-shadow: 0 0 15px rgba(255, 82, 82, 0.5);
-}
-
-.container {
-  max-width: 1100px;
-  margin-inline: auto;
-  padding-inline: 1rem;
+.nav .btn:hover {
+  background: #b31f1f;
+  transform: translateY(-2px);
 }
 
 .auth-container {
@@ -87,7 +117,6 @@ body {
   margin: 0 0 0.25rem 0;
   font-size: 1.9rem;
   color: var(--text-light);
-  letter-spacing: 0.2px;
 }
 
 .auth-container > p {
@@ -139,63 +168,8 @@ body {
   accent-color: var(--royal-blue);
 }
 
-.btn {
+.auth-btn {
   display: inline-block;
-  background: var(--royal-blue);
-  color: var(--text-light);
-  border: 1px solid rgba(0, 119, 255, 0.5);
-  border-radius: 14px;
-  padding: 0.85rem 1.1rem;
-  font-weight: 700;
-  letter-spacing: 0.2px;
-  cursor: pointer;
-  transition: transform .05s ease, box-shadow .15s ease, background-color .15s ease;
-  text-decoration: none;
-  text-align: center;
-}
-
-.btn:hover {
-  background: #1a88ff;
-  box-shadow: 0 8px 22px rgba(0, 119, 255, 0.25);
-}
-
-.btn:active {
-  transform: translateY(1px);
-}
-
-.auth-container a {
-  color: var(--royal-blue);
-  text-decoration: none;
-  font-weight: 600;
-}
-
-.auth-container a:hover {
-  text-decoration: underline;
-}
-
-.error-message {
-  display: none;
-  color: var(--casino-red);
-  font-size: 0.92rem;
-  margin-top: 0.2rem;
-}
-
-@media (max-width: 640px) {
-  .auth-container {
-    margin: 2.5rem 1rem;
-    padding: 1.5rem;
-  }
-
-  .auth-container h1 {
-    font-size: 1.6rem;
-  }
-
-  .nav {
-    gap: 1rem;
-  }
-}
-
-.btn {
   background-color: var(--text-light);
   color: var(--deep-navy);
   font-weight: 700;
@@ -204,28 +178,33 @@ body {
   border-radius: 20px;
   font-size: 1rem;
   cursor: pointer;
-  transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+  transition: 0.2s ease;
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
+  text-align: center;
 }
 
-.btn:hover {
-  background-color: var(--mint-light, #e6e6e6);
+.auth-btn:hover {
+  background-color: #e6e6e6;
   color: var(--royal-blue);
   box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
 }
 
-.btn:active {
+.auth-btn:active {
   transform: translateY(1px);
 }
 
+.has-account {
+  text-align: center;
+  margin: 1rem 0 0 0;
+}
+
 .login-btn {
-  display: inline-block;
+  display: block;
   background-color: var(--casino-red);
   color: var(--text-light);
   font-weight: 600;
   padding: 0.9rem 1.6rem;
-  border: none;
   border-radius: 24px;
   font-size: 1.05rem;
   box-shadow: 0 0 10px rgba(229, 57, 53, 0.3);
@@ -244,4 +223,19 @@ body {
 
 .login-btn:active {
   transform: translateY(1px);
+}
+
+@media (max-width: 640px) {
+  .auth-container {
+    margin: 2.5rem 1rem;
+    padding: 1.5rem;
+  }
+
+  .auth-container h1 {
+    font-size: 1.6rem;
+  }
+
+  .nav {
+    gap: 1rem;
+  }
 }

@@ -7,16 +7,19 @@
   <link rel="stylesheet" href="login.css" />
 </head>
 <body>
+
   <header class="header">
-    <div class="logo">Bulldog Bookie</div>
-    <nav class="nav">
-      <a href="homepage.html">Home</a>
-      <a href="events.html">Events</a>
-      <a href="wallet.html">Wallet</a>
-      <a href="wagers.html">Wagers</a>
-      <a href="admin.html">Admin</a>
-      <a href="login.html" class="login-btn">Login</a>
-    </nav>
+    <div class="container">
+      <div class="logo">Bulldog Bookie</div>
+      <nav class="nav">
+        <a href="homepage.html">Home</a>
+        <a href="events.html">Events</a>
+        <a href="wallet.html">Wallet</a>
+        <a href="wagers.html">Wagers</a>
+        <a href="admin.html">Admin</a>
+        <a href="login.html" class="btn">Login</a>
+      </nav>
+    </div>
   </header>
 
   <main class="container">
@@ -35,12 +38,13 @@
           <input id="password" name="password" type="password" autocomplete="current-password" required />
         </div>
 
-        <button type="submit" class="btn">Login</button>
+        <button type="submit" class="auth-btn">Login</button>
 
-        <p>Don't have an account?</p>
+        <p class="no-account">Don't have an account?</p>
         <button type="button" class="create-btn" onclick="window.location.href='createAccount.html'">Create Account</button>
       </form>
     </section>
   </main>
+
 </body>
 </html>

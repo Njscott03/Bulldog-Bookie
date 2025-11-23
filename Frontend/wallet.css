@@ -42,6 +42,24 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
   margin-inline: auto;
 }
 
+.btn {
+  display: inline-block;
+  padding: 0.9rem 1.4rem;
+  border-radius: 999px;
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  font-weight: 600;
+  text-decoration: none;
+  border: none;
+  box-shadow: 0 8px 20px rgba(214, 40, 40, 0.25);
+  transition: all 0.2s ease;
+}
+
+.btn:hover {
+  background: var(--btn-bg-hover);
+  transform: translateY(-2px);
+}
+
 .header {
   position: sticky;
   top: 0;
@@ -72,6 +90,7 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
 
 .nav {
   display: flex;
+  justify-content: flex-end;
   align-items: center;
   gap: 1rem;
 }
@@ -88,12 +107,12 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
 
 .nav .btn {
   background: var(--casino-red);
-  color: white;
+  color: #fff;
   font-weight: 600;
   padding: 0.5rem 1.2rem;
   border-radius: 999px;
   box-shadow: 0 0 15px rgba(214, 40, 40, 0.25);
-  transition: 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .nav .btn:hover {
@@ -101,100 +120,70 @@ a:hover { color: var(--link-hover); text-decoration: underline; }
   transform: translateY(-2px);
 }
 
-.auth-container {
-  max-width: 480px;
-  margin: 5rem auto;
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  box-shadow: var(--shadow);
-  padding: 2rem;
-}
-
-.auth-container h1 {
+.wallet-hero {
   text-align: center;
-  font-size: 1.9rem;
-  margin-bottom: 0.25rem;
-}
-
-.auth-container > p {
-  text-align: center;
-  color: var(--text-muted);
+  margin-top: 3rem;
   margin-bottom: 2rem;
 }
 
-#loginForm {
-  display: grid;
-  gap: 1rem;
+.wallet-hero h1 {
+  font-size: clamp(2rem, 3vw, 2.4rem);
+  font-weight: 800;
+  margin-bottom: 0.25rem;
 }
 
-.form-group {
-  display: grid;
-  gap: 0.4rem;
-}
-
-.form-group label {
-  font-weight: 600;
-  color: var(--text-light);
-}
-
-.form-group input {
-  width: 100%;
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  background: #0e1522;
-  color: var(--text-light);
-  padding: 0.85rem 0.9rem;
-  transition: 0.15s ease;
-}
-
-.form-group input:focus {
-  border-color: var(--royal-blue);
-  box-shadow: 0 0 0 3px rgba(0,119,255,0.15);
-}
-
-.auth-btn {
-  background-color: var(--text-light);
-  color: var(--deep-navy);
-  font-weight: 700;
-  padding: 0.9rem 1.2rem;
-  border: none;
-  border-radius: 20px;
+.wallet-hero p {
+  color: var(--text-muted);
+  max-width: 650px;
   font-size: 1rem;
-  cursor: pointer;
-  transition: 0.2s ease;
-  box-shadow: 0 0 10px rgba(255,255,255,0.1);
+  margin: 0.5rem auto 0;
 }
 
-.auth-btn:hover {
-  background-color: #e6e6e6;
+.wallet-card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  padding: 2rem 2.25rem;
+  max-width: 650px;
+  margin: 0 auto 3rem;
+}
+
+.wallet-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+
+.wallet-row:last-of-type {
+  border-bottom: none;
+}
+
+.wallet-row .label {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+
+.wallet-row .value {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.main-balance .label {
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.main-balance .value {
+  font-size: 1.6rem;
   color: var(--royal-blue);
 }
 
-.create-btn {
-  background-color: var(--casino-red);
-  color: var(--text-light);
-  font-weight: 600;
-  padding: 0.9rem 1.6rem;
-  border-radius: 24px;
-  margin: 1rem auto 0;
-  display: block;
-  transition: 0.2s ease;
-}
-
-.create-btn:hover {
-  background-color: #ff5252;
-  color: var(--royal-blue);
-}
-
-.no-account {
-  text-align: center;
-  margin: 0.5rem 0 0;
-}
-
-@media (max-width: 640px) {
-  .auth-container {
-    margin: 3rem 1rem;
-    padding: 1.5rem;
-  }
+.wallet-note {
+  margin-top: 1.2rem;
+  font-size: 0.9rem;
+  color: var(--text-muted);
 }

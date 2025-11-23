@@ -8,15 +8,17 @@
 </head>
 <body>
   <header class="header">
-    <div class="logo">Bulldog Bookie</div>
-    <nav class="nav">
-      <a href="homepage.html">Home</a>
-      <a href="events.html">Events</a>
-      <a href="wallet.html">Wallet</a>
-      <a href="wagers.html">Wagers</a>
-      <a href="admin.html">Admin</a>
-      <a href="login.html" class="login-btn">Login</a>
-    </nav>
+    <div class="container">
+      <div class="logo">Bulldog Bookie</div>
+      <nav class="nav">
+        <a href="homepage.html">Home</a>
+        <a href="events.html">Events</a>
+        <a href="wallet.html">Wallet</a>
+        <a href="wagers.html">Wagers</a>
+        <a href="admin.html">Admin</a>
+        <a href="login.html" class="btn">Login</a>
+      </nav>
+    </div>
   </header>
 
   <main class="container">
@@ -71,8 +73,9 @@
           </label>
         </div>
 
-        <button type="submit" class="btn">Create Account</button>
-        <p>Already have an account?</p>
+        <button type="submit" class="auth-btn">Create Account</button>
+
+        <p class="has-account">Already have an account?</p>
         <button type="button" class="login-btn" onclick="window.location.href='login.html'">Login</button>
       </form>
     </section>

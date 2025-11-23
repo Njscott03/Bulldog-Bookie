@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wagers • Bulldog Bookie</title>
+  <link rel="stylesheet" href="wagers.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="container">
+      <div class="logo">Bulldog Bookie</div>
+      <nav class="nav">
+        <a href="homepage.html">Home</a>
+        <a href="events.html">Events</a>
+        <a href="wallet.html">Wallet</a>
+        <a href="wagers.html">Wagers</a>
+        <a href="admin.html">Admin</a>
+        <a href="login.html" class="btn">Login</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="wagers-hero">
+      <h1>Active Wagers</h1>
+      <p>Review your open bets, see your risk and potential winnings, and track your exposure.</p>
+    </section>
+
+    <section class="wagers-list">
+      <div class="wagers-card">
+        <div class="wagers-header">
+          <span class="col matchup">Matchup</span>
+          <span class="col market">Market / Selection</span>
+          <span class="col odds">Odds</span>
+          <span class="col risk">Risk</span>
+          <span class="col win">To Win</span>
+        </div>
+
+        <div class="wager-row">
+          <div class="col matchup">
+            Mississippi State @ Ole Miss
+            <span class="tag pending">Pending</span>
+          </div>
+          <div class="col market">Spread – Mississippi State -3.5</div>
+          <div class="col odds">-110</div>
+          <div class="col risk">$25.00</div>
+          <div class="col win">$22.73</div>
+        </div>
+
+        <div class="wager-row">
+          <div class="col matchup">
+            Alabama @ LSU
+            <span class="tag pending">Pending</span>
+          </div>
+          <div class="col market">Moneyline – LSU</div>
+          <div class="col odds">+210</div>
+          <div class="col risk">$15.00</div>
+          <div class="col win">$31.50</div>
+        </div>
+
+        <div class="wager-row">
+          <div class="col matchup">
+            Georgia @ Auburn
+            <span class="tag pending">Pending</span>
+          </div>
+          <div class="col market">Total – Over 49.0</div>
+          <div class="col odds">-110</div>
+          <div class="col risk">$10.00</div>
+          <div class="col win">$9.09</div>
+        </div>
+      </div>
+
+      <div class="wagers-summary">
+        <div class="summary-item">
+          <span>Total Risk</span>
+          <span class="summary-value">$50.00</span>
+        </div>
+        <div class="summary-item">
+          <span>Total To Win</span>
+          <span class="summary-value">$63.32</span>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
