@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wallet • Bulldog Bookie</title>
+    <link rel="stylesheet" href="{% static 'core/wallet.css' %}" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="container">
+        <div class="logo">Bulldog Bookie</div>
+        <nav class="nav">
+          <a href="{% url 'home' %}">Home</a>
+          <a href="{% url 'wallet' %}">Wallet</a>
+          <a href="{% url 'student_dashboard' %}">Wagers</a>
+          <a href="{% url 'admin_dashboard' %}">Admin</a>
+          <a href="{% url 'logout' %}" class="btn">Logout</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="wallet-hero">
+        <h1>Wallet</h1>
+        <p>
+          Check your current balance, see what’s available to wager, and what’s
+          still pending.
+        </p>
+      </section>
+
+      <section class="wallet-card">
+        <div class="wallet-row main-balance">
+          <span class="label">Current Balance</span>
+          <span class="value">${{ user.wallet_balance }}</span>
+        </div>
+
+        <div class="wallet-row">
+          <span class="label">Available Balance</span>
+          <span class="value">${{ available_balance }}</span>
+        </div>
+
+        <div class="wallet-row">
+          <span class="label">Pending</span>
+          <span class="value">${{ pending_balance }}</span>
+        </div>
+
+        <p class="wallet-note">
+          Pending reflects open wagers and unsettled results. Available balance
+          is what you can use to place new wagers.
+        </p>
+      </section>
+    </main>
+  </body>
+</html>

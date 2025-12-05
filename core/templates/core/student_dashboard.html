@@ -1,3 +1,38 @@
-<h2>Welcome, {{ user.username }}!</h2>
-<p>Your balance: ${{ user.wallet_balance }}</p>
-<a href="{% url 'logout' %}">Logout</a>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Dashboard • Bulldog Bookie</title>
+    <link rel="stylesheet" href="{% static 'core/student_dashboard.css' %}" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="container">
+        <div class="logo">Bulldog Bookie</div>
+        <nav class="nav">
+          <a href="{% url 'home' %}">Home</a>
+          <a href="{% url 'wallet' %}">Wallet</a>
+          <a href="{% url 'wagers' %}">Wagers</a>
+          <a href="{% url 'logout' %}" class="btn">Logout</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="dashboard-hero">
+        <h2>Welcome, {{ user.username }}!</h2>
+        <p>Your balance: ${{ user.wallet_balance }}</p>
+      </section>
+
+      {% if messages %}
+      <ul class="messages">
+        {% for message in messages %}
+        <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </main>
+  </body>
+</html>

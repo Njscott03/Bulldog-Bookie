@@ -1,0 +1,50 @@
+{% extends "core/base.html" %} {% block content %}
+<h1>Admin Wagers</h1>
+
+<form method="get" class="filters">
+  <input
+    type="text"
+    name="username"
+    placeholder="Username"
+    value="{{ filters.username }}"
+  />
+  <input
+    type="text"
+    name="status"
+    placeholder="Status"
+    value="{{ filters.status }}"
+  />
+  <input type="date" name="date_from" value="{{ filters.date_from }}" />
+  <input type="date" name="date_to" value="{{ filters.date_to }}" />
+  <button type="submit">Filter</button>
+</form>
+
+<table border="1" cellpadding="5" cellspacing="0">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Student</th>
+      <th>Amount</th>
+      <th>Payout</th>
+      <th>Status</th>
+      <th>Placed At</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for wager in wagers %}
+    <tr>
+      <td>{{ wager.id }}</td>
+      <td>{{ wager.user.username }}</td>
+      <td>${{ wager.amount }}</td>
+      <td>${{ wager.payout }}</td>
+      <td>{{ wager.status }}</td>
+      <td>{{ wager.placed_at }}</td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan="6">No wagers found.</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

@@ -1,23 +1,74 @@
+{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>Login</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login • Bulldog Bookie</title>
+    <link rel="stylesheet" href="{% static 'core/login.css' %}" />
   </head>
   <body>
-    <h1>Login</h1>
-    <form method="POST">
-      {% csrf_token %}
-      <label>Username:</label><input type="text" name="username" /><br />
-      <label>Password:</label><input type="password" name="password" /><br />
-      <button type="submit">Login</button>
-    </form>
+    <header class="header">
+      <div class="container">
+        <div class="logo">Bulldog Bookie</div>
+        <nav class="nav">
+          <a href="{% url 'home' %}">Home</a>
+          <a href="{% url 'wallet' %}">Wallet</a>
+          <a href="{% url 'wagers' %}">Wagers</a>
+          <a href="{% url 'admin_dashboard' %}">Admin</a>
+          <a href="{% url 'login' %}" class="btn">Login</a>
+        </nav>
+      </div>
+    </header>
 
-    {% if messages %}
-    <ul>
-      {% for message in messages %}
-      <li>{{ message }}</li>
-      {% endfor %}
-    </ul>
-    {% endif %}
+    <main class="container">
+      <section class="auth-container" aria-labelledby="login-title">
+        <h1 id="login-title">Login</h1>
+        <p>Welcome back to Bulldog Bookie.</p>
+
+        <form
+          id="loginForm"
+          action="{% url 'login' %}"
+          method="post"
+          novalidate
+        >
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input
+              id="username"
+              name="username"
+              type="text"
+              autocomplete="username"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              autocomplete="current-password"
+              required
+            />
+          </div>
+
+          <button type="submit" class="auth-btn">Login</button>
+
+          <p class="no-account">Don't have an account?</p>
+          <a href="{% url 'register' %}" class="create-btn">Create Account</a>
+        </form>
+
+        {% if messages %}
+        <ul class="messages">
+          {% for message in messages %}
+          <li class="{{ message.tags }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </section>
+    </main>
   </body>
 </html>

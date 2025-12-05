@@ -1,0 +1,77 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wagers • Bulldog Bookie</title>
+    <link rel="stylesheet" href="{% static 'core/wagers.css' %}" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="container">
+        <div class="logo">Bulldog Bookie</div>
+        <nav class="nav">
+          <a href="{% url 'home' %}">Home</a>
+          <a href="{% url 'wallet' %}">Wallet</a>
+          <a href="{% url 'student_dashboard' %}">Wagers</a>
+          <a href="{% url 'admin_dashboard' %}">Admin</a>
+          <a href="{% url 'logout' %}" class="btn">Logout</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="wagers-hero">
+        <h1>Active Wagers</h1>
+        <p>
+          Review your open bets, see your risk and potential winnings, and track
+          your exposure.
+        </p>
+      </section>
+
+      <section class="wagers-list">
+        <div class="wagers-card">
+          <div class="wagers-header">
+            <span class="col matchup">Matchup</span>
+            <span class="col market">Market / Selection</span>
+            <span class="col odds">Odds</span>
+            <span class="col risk">Risk</span>
+            <span class="col win">To Win</span>
+          </div>
+
+          {% for wager in wagers %}
+          <div class="wager-row">
+            <div class="col matchup">
+              {{ wager.game }} {% if wager.status == 'Pending' %}
+              <span class="tag pending">Pending</span>
+              {% elif wager.status == 'Settled' %}
+              <span class="tag settled">Settled</span>
+              {% endif %}
+            </div>
+            <div class="col market">{{ wager.market_selection }}</div>
+            <div class="col odds">{{ wager.odds }}</div>
+            <div class="col risk">${{ wager.amount }}</div>
+            <div class="col win">${{ wager.payout }}</div>
+          </div>
+          {% empty %}
+          <div class="wager-row">
+            <div class="col" colspan="5">No active wagers</div>
+          </div>
+          {% endfor %}
+        </div>
+
+        <div class="wagers-summary">
+          <div class="summary-item">
+            <span>Total Risk</span>
+            <span class="summary-value">${{ total_risk }}</span>
+          </div>
+          <div class="summary-item">
+            <span>Total To Win</span>
+            <span class="summary-value">${{ total_to_win }}</span>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
