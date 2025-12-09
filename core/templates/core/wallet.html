@@ -33,7 +33,13 @@
       <section class="wallet-card">
         <div class="wallet-row main-balance">
           <span class="label">Current Balance</span>
-          <span class="value">${{ user.wallet_balance }}</span>
+          <span class="value" id="current-balance">
+            {% if wallet %}
+              ${{ wallet.balance|floatformat:2 }}
+            {% else %}
+              ${{ user.wallet_balance|floatformat:2 }}
+            {% endif %}
+          </span>
         </div>
 
         <div class="wallet-row">
@@ -54,3 +60,4 @@
     </main>
   </body>
 </html>
+
