@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'core',
     'accounts',
     'api',
+    'wallet'
 
     # Third-party apps
     'rest_framework',
