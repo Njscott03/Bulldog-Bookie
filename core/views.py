@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.db.models import Sum, F
 from .models import CustomUser, Wager
+from wallet.services import WalletService
 
 # ----------------------------
 # Helper Functions
@@ -84,15 +85,35 @@ def student_wagers_view(request):
 # ----------------------------
 @login_required
 def wallet_view(request):
+    print("DEBUG: wallet_view is running!")
     user = request.user
-    wallet_balance = user.wallet_balance
-    wagers = user.wagers.all().order_by('-placed_at')[:10]
-
-    return render(request, "core/wallet.html", {
-        "user": user,
-        "wallet_balance": wallet_balance,
-        "wagers": wagers,
-    })
+    
+    try:
+        
+        # Get wallet from WalletService
+        wallet = WalletService.get_user_wallet(user)
+        print(f"DEBUG: Using WalletService. Balance: {wallet.balance}")
+        
+        # Get recent transactions
+        transactions = wallet.transactions.all().order_by('-created_at')[:10]
+        
+        return render(request, "core/wallet.html", {
+            "user": user,
+            "wallet": wallet,  # Pass the wallet object
+            "wallet_balance": wallet.balance,  # Use wallet.balance, not user.wallet_balance
+            "transactions": transactions,
+            "wagers": user.wagers.all().order_by('-placed_at')[:10],
+        })
+        
+    except Exception as e:
+        # Fallback to simple system if wallet not ready
+        print(f"DEBUG: WalletService failed. Using fallback. Error: {e}")
+        
+        return render(request, "core/wallet.html", {
+            "user": user,
+            "wallet_balance": user.wallet_balance,  # Old field as fallback
+            "wagers": user.wagers.all().order_by('-placed_at')[:10],
+        })
 
 # ----------------------------
 # ADMIN VIEWS
