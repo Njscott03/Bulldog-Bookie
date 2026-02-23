@@ -164,6 +164,7 @@ a:hover {
   flex-direction: column;
   align-items: center;
   padding: 5rem 0 6rem;
+  gap: 2.5rem;
 }
 
 .feature-card {
@@ -199,9 +200,6 @@ a:hover {
   font-size: 1rem;
 }
 
-.feature-card:not(:last-child) {
-  margin-bottom: 2.5rem;
-}
 
 footer {
   background: var(--deep-navy);
@@ -212,6 +210,17 @@ footer {
   font-size: 0.9rem;
   border-radius: 12px;
   margin-top: 4rem;
+}
+
+.feature-link {
+  text-decoration: none;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.feature-link:hover {
+  text-decoration: none;
 }
 
 @media (max-width: 768px) {
