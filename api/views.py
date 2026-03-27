@@ -7,6 +7,8 @@ from rest_framework.permissions import AllowAny
 from rest_framework import serializers
 
 User = get_user_model()
+# api/views.py
+
 
 # Serializer for registration
 class RegisterSerializer(serializers.ModelSerializer):

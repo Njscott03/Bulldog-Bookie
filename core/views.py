@@ -18,6 +18,94 @@ def is_admin_user(user):
 def home(request):
     return render(request, "core/home.html")
 
+from django.shortcuts import render
+from django.core.cache import cache
+from datetime import datetime
+
+def nba_odds(request):
+    """Simple view to display NBA odds"""
+    
+    # Try to get from cache first
+    games = cache.get('nba_odds')
+    
+    if games is None:
+        # If not in cache, fetch fresh data
+        import requests
+        from django.conf import settings
+        from datetime import timedelta
+        
+        API_KEY = settings.ODDS_API_KEY
+        base_url = "https://api.odds-api.io/v3"
+        
+        today = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
+        tomorrow = today + timedelta(days=1)
+        
+        events_response = requests.get(
+            f"{base_url}/events",
+            params={
+                'apiKey': API_KEY,
+                'sport': 'basketball',
+                'league': 'usa-nba',
+                'from': today.isoformat() + 'Z',
+                'to': tomorrow.isoformat() + 'Z'
+            }
+        )
+        
+        games = []
+        if events_response.status_code == 200:
+            events = events_response.json()
+            for event in events:
+                game_data = {
+                    'id': event.get('id'),
+                    'home': event.get('home'),
+                    'away': event.get('away'),
+                    'date': event.get('date'),
+                    'odds': []
+                }
+                
+                odds_response = requests.get(
+                    f"{base_url}/odds",
+                    params={
+                        'apiKey': API_KEY,
+                        'eventId': event.get('id'),
+                        'bookmakers': 'DraftKings,FanDuel,Bet365'
+                    }
+                )
+                
+                if odds_response.status_code == 200:
+                    odds_data = odds_response.json()
+                    bookmakers = odds_data.get('bookmakers', {})
+                    
+                    for bookmaker_name, markets in bookmakers.items():
+                        for market in markets:
+                            if market.get('name') == 'ML':
+                                odds = market.get('odds', {})
+                                
+                                if isinstance(odds, list):
+                                    home_odds = next((o.get('price') for o in odds if o.get('name') == game_data['home']), 'N/A')
+                                    away_odds = next((o.get('price') for o in odds if o.get('name') == game_data['away']), 'N/A')
+                                else:
+                                    home_odds = odds.get('home', 'N/A')
+                                    away_odds = odds.get('away', 'N/A')
+                                
+                                game_data['odds'].append({
+                                    'bookmaker': bookmaker_name,
+                                    'home_odds': home_odds,
+                                    'away_odds': away_odds
+                                })
+                
+                games.append(game_data)
+            
+            # Cache for 5 minutes
+            cache.set('nba_odds', games, 300)
+    
+    context = {
+        'games': games,
+        'today': datetime.now().strftime('%B %d, %Y')
+    }
+    
+    return render(request, 'core/student_wagers.html', context)
+
 def register_view(request):
     if request.method == "POST":
         username = request.POST["username"]

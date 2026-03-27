@@ -28,7 +28,7 @@ INSTALLED_APPS = [
     'core',
     'accounts',
     'api',
-    'wallet'
+    'wallet',
 
     # Third-party apps
     'rest_framework',
@@ -139,3 +139,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = 'wallet'
 LOGOUT_REDIRECT_URL = 'home'
+ODDS_API_KEY = "58e1a2c878ba265addb081c6988e6d4e5e1d4dd42514b7220c2f5ad3e6ca70ce"
+ODDS_API_BASE_URL = "https://api.odds-api.io/v3"
