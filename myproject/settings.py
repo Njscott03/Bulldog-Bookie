@@ -141,3 +141,10 @@ LOGIN_REDIRECT_URL = 'wallet'
 LOGOUT_REDIRECT_URL = 'home'
 ODDS_API_KEY = "58e1a2c878ba265addb081c6988e6d4e5e1d4dd42514b7220c2f5ad3e6ca70ce"
 ODDS_API_BASE_URL = "https://api.odds-api.io/v3"
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://localhost:8000',
+    'http://localhost:8000',
+    'https://127.0.0.1:8000',
+    'http://127.0.0.1:8000',
+]

@@ -1,11 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    {% load static %}
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Bulldog Bookie</title>
-    <link rel="stylesheet" href="{% static 'core/home.css' %}" />
+    <title>Login • Bulldog Bookie</title>
+    <link rel="stylesheet" href="{% static 'core/admin_dashboard.css' %}" />
   </head>
   <body>
     <header class="header">
@@ -22,9 +22,19 @@
       </div>
     </header>
 
-    <section class="hero">
-      <h1>Welcome to Bulldog Bookie</h1>
-      <p>Your one-stop platform for managing bets and wagers.</p>
-    </section>
+    <main>
+      {% if messages %}
+      <ul class="messages">
+        {% for message in messages %}
+        <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %} {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+      <hr />
+      <p>&copy; 2025 Bulldog Bookie</p>
+    </footer>
   </body>
 </html>

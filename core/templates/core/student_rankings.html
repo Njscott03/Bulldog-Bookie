@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Rankings • Bulldog Bookie{% endblock %}
+
+{% block content %}
+<div style="text-align: center; margin-bottom: 2rem;">
+    <h2>🏆 Student Rankings</h2>
+    <p>Who's winning the most fake money?</p>
+</div>
+
+{% if current_user_data %}
+<!-- Your Rank Card -->
+<div style="background: #667eea; color: white; padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem;">
+    <h3>Your Rank: #{{ current_user_rank }}</h3>
+    <p>Net Profit: ${{ current_user_data.net_profit|floatformat:2 }}</p>
+    <p>Win Rate: {{ current_user_data.win_rate }}%</p>
+</div>
+
+<!-- Simple Chart -->
+<div style="background: white; padding: 1rem; border-radius: 12px; margin-bottom: 2rem; border: 1px solid #ddd;">
+    <h3>Net Profit Leaderboard</h3>
+    <canvas id="profitChart" height="300"></canvas>
+</div>
+
+<!-- Top 10 List -->
+<div style="background: white; padding: 1rem; border-radius: 12px; margin-bottom: 2rem; border: 1px solid #ddd;">
+    <h3>Top 10 Bettors</h3>
+    <table style="width: 100%; border-collapse: collapse;">
+        <thead>
+            <tr>
+                <th style="text-align: left; padding: 8px;">Rank</th>
+                <th style="text-align: left; padding: 8px;">Student</th>
+                <th style="text-align: left; padding: 8px;">Profit</th>
+                <th style="text-align: left; padding: 8px;">Win Rate</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in top_10 %}
+            <tr style="{% if user.user_id == request.user.id %}background: #e8f0fe;{% endif %}">
+                <td style="padding: 8px;">
+                    {% if user.rank == 1 %}🥇
+                    {% elif user.rank == 2 %}🥈
+                    {% elif user.rank == 3 %}🥉
+                    {% else %}{{ user.rank }}{% endif %}
+                </td>
+                <td style="padding: 8px;">
+                    {{ user.username }}
+                    {% if user.user_id == request.user.id %} (You){% endif %}
+                </td>
+                <td style="padding: 8px; {% if user.net_profit > 0 %}color: green;{% else %}color: red;{% endif %}">
+                    ${{ user.net_profit|floatformat:2 }}
+                </td>
+                <td style="padding: 8px;">{{ user.win_rate }}%</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% else %}
+<!-- No bets yet -->
+<div style="text-align: center; padding: 3rem; background: white; border-radius: 12px;">
+    <p>🎲 You haven't placed any bets yet!</p>
+    <a href="{% url 'wagers' %}" style="display: inline-block; margin-top: 1rem; padding: 10px 20px; background: #3498db; color: white; text-decoration: none; border-radius: 6px;">Place Your First Bet</a>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+// Simple bar chart
+const ctx = document.getElementById('profitChart').getContext('2d');
+new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: {{ chart_labels|safe }},
+        datasets: [{
+            label: 'Net Profit ($)',
+            data: {{ chart_profits|safe }},
+            backgroundColor: 'rgba(54, 162, 235, 0.7)',
+            borderColor: 'rgb(54, 162, 235)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        scales: {
+            y: {
+                ticks: {
+                    callback: function(value) {
+                        return '$' + value;
+                    }
+                }
+            }
+        }
+    }
+});
+</script>
+{% endblock %}

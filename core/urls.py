@@ -14,7 +14,7 @@ urlpatterns = [
     path('student-dashboard/', views.student_dashboard, name='student_dashboard'),
     path('wallet/', views.wallet_view, name='wallet'),
     path('wagers/', views.nba_odds, name='wagers'),
-    #path('nba-odds/', views.nba_odds, name='nba_odds'), 
+    path('rankings/', views.student_rankings, name='student_rankings'),
 
     # Admin
     path('admin-dashboard/', views.admin_dashboard, name='admin_dashboard'),

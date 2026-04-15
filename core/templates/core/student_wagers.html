@@ -1,97 +1,54 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login • Bulldog Bookie</title>
-    <link rel="stylesheet" href="{% static 'core/login.css' %}" />
-  </head>
-  <body>
-    <header class="header">
-      <div class="container">
-        <div class="logo">Bulldog Bookie</div>
-        <nav class="nav">
-          <a href="{% url 'home' %}">Home</a>
-          <a href="{% url 'wallet' %}">Wallet</a>
-          <a href="{% url 'wagers' %}">Wagers</a>
-          <a href="{% url 'admin_dashboard' %}">Admin</a>
-          <a href="{% url 'login' %}" class="btn">Login</a>
-        </nav>
-      </div>
-    </header>
-<body>
 
-    <main class="container">
-        <div class="dashboard-hero">
-            <h2>🏀 NBA Odds</h2>
-            <p>{{ today }}</p>
-        </div>
+{% block content %}
+<main class="container">
+    <div class="dashboard-hero">
+        <h2>🏀 NBA Odds</h2>
+        <p>{{ today }}</p>
+    </div>
 
-        {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-            <li class="{{ message.tags }}">{{ message }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
 
-        <div class="odds-section">
-            <h3>Tonight's Games</h3>
-            
-            {% if games %}
-                <div class="games-grid">
-                    {% for game in games %}
-                    <div class="game-card">
-                        <div class="game-teams">
-                            {{ game.home }} vs {{ game.away }}
-                        </div>
-                        <div class="game-time">
-                            🕐 {{ game.date|slice:"11:16" }} ET
-                        </div>
-                        
-                        <div class="odds-container">
-                            {% for odd in game.odds %}
-                            <div class="odds-bookmaker">
-                                <div class="bookmaker-name">{{ odd.bookmaker }}</div>
-                                <div class="odds-row">
-                                    <div class="odds-box">
-                                        <div class="team-name">{{ game.home }}</div>
-                                        <div class="odds-value">{{ odd.home_odds }}</div>
-                                    </div>
-                                    <div class="odds-box">
-                                        <div class="team-name">{{ game.away }}</div>
-                                        <div class="odds-value">{{ odd.away_odds }}</div>
-                                    </div>
-                                </div>
-                            </div>
-                            {% endfor %}
-                        </div>
-                        
-                        <button class="bet-button" onclick="placeBet('{{ game.id }}', '{{ game.home }}', '{{ game.away }}')">
-                            Place Bet
-                        </button>
+    <div class="odds-section">
+        <h3>Tonight's Games</h3>
+        
+        {% if games %}
+            <div class="games-grid">
+                {% for game in games %}
+                <div class="game-card">
+                    <div class="game-teams">
+                        {{ game.home }} vs {{ game.away }}
                     </div>
-                    {% endfor %}
+                    <div class="game-time">
+                        🕐 {{ game.date|slice:"11:16" }} ET
+                    </div>
+                    
+                    <button class="bet-button" onclick="placeBet('{{ game.id }}', '{{ game.home }}', '{{ game.away }}')">
+                        Place Bet
+                    </button>
                 </div>
-            {% else %}
-                <div class="no-games">
-                    <p>No NBA games scheduled for today.</p>
-                    <p>Check back on game days for the latest odds!</p>
-                </div>
-            {% endif %}
-        </div>
-    </main>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="no-games">
+                <p>No NBA games scheduled for today.</p>
+                <p>Check back on game days for the latest odds!</p>
+            </div>
+        {% endif %}
+    </div>
+</main>
 
-    <script>
-        function placeBet(eventId, homeTeam, awayTeam) {
-            // Redirect to bet placement page
-            window.location.href = `/place-bet/?event_id=${eventId}&home=${encodeURIComponent(homeTeam)}&away=${encodeURIComponent(awayTeam)}`;
-        }
-    </script>
-</body>
-    <main class="container">
-      
-    </main>
-  </body>
-</html>
+<script>
+    function placeBet(eventId, homeTeam, awayTeam) {
+        // Redirect to bet placement page
+        window.location.href = `/place-bet/?event_id=${eventId}&home=${encodeURIComponent(homeTeam)}&away=${encodeURIComponent(awayTeam)}`;
+    }
+</script>
+{% endblock %}

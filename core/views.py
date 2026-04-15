@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.db.models import Sum, F
 from .models import CustomUser, Wager
 from wallet.services import WalletService
+import json
 
 # ----------------------------
 # Helper Functions
@@ -21,10 +22,127 @@ def home(request):
 from django.shortcuts import render
 from django.core.cache import cache
 from datetime import datetime
+import requests
+from django.conf import settings
+from datetime import timedelta
 
-def nba_odds(request):
-    """Simple view to display NBA odds"""
+from django.utils import timezone
+import pytz
+from datetime import datetime, timedelta
+
+def nba_odds(request): 
+    # Try to get from cache first
+    games = cache.get('nba_odds')
     
+    if games is None:
+        # If not in cache, fetch fresh data
+        import requests
+        from django.conf import settings
+        
+        API_KEY = settings.ODDS_API_KEY
+        base_url = "https://api.odds-api.io/v3"
+        
+        # Set timezone for Mississippi (Central Time)
+        local_tz = pytz.timezone('America/Chicago')
+        
+        # Get current time in Central Time
+        now_local = datetime.now(local_tz)
+        
+        # Set today and tomorrow in UTC for API request (API expects UTC)
+        today_utc = now_local.replace(hour=0, minute=0, second=0, microsecond=0).astimezone(pytz.UTC)
+        tomorrow_utc = today_utc + timedelta(days=2)  # Get next 2 days to catch late games
+        
+        events_response = requests.get(
+            f"{base_url}/events",
+            params={
+                'apiKey': API_KEY,
+                'sport': 'basketball',
+                'league': 'usa-nba',
+                'from': today_utc.isoformat().replace('+00:00', 'Z'),
+                'to': tomorrow_utc.isoformat().replace('+00:00', 'Z')
+            }
+        )
+        
+        games = []
+        if events_response.status_code == 200:
+            events = events_response.json()
+            for event in events:
+                # Convert API datetime (UTC) to Central Time for display
+                event_date_utc = datetime.fromisoformat(event.get('date').replace('Z', '+00:00'))
+                event_date_local = event_date_utc.astimezone(local_tz)
+                
+                # Only show games that are today or tonight (not past games)
+                # Show games from 6 AM today until 5 AM tomorrow (covers late night games)
+                start_of_day = now_local.replace(hour=6, minute=0, second=0, microsecond=0)
+                end_of_day = now_local + timedelta(days=1)
+                end_of_day = end_of_day.replace(hour=5, minute=0, second=0, microsecond=0)
+                
+                if event_date_local < start_of_day:
+                    continue  # Skip games from earlier today
+                
+                game_data = {
+                    'id': event.get('id'),
+                    'home': event.get('home'),
+                    'away': event.get('away'),
+                    'date_utc': event.get('date'),
+                    'date_local': event_date_local,  # Store as datetime object
+                    'time_local': event_date_local.strftime('%I:%M %p'),  # Format as 12-hour time
+                    'odds': []
+                }
+                
+                odds_response = requests.get(
+                    f"{base_url}/odds",
+                    params={
+                        'apiKey': API_KEY,
+                        'eventId': event.get('id'),
+                        'bookmakers': 'DraftKings,FanDuel,Bet365'
+                    }
+                )
+                
+                if odds_response.status_code == 200:
+                    odds_data = odds_response.json()
+                    bookmakers = odds_data.get('bookmakers', {})
+                    
+                    for bookmaker_name, markets in bookmakers.items():
+                        for market in markets:
+                            if market.get('name') == 'ML':
+                                odds = market.get('odds', {})
+                                
+                                if isinstance(odds, list):
+                                    home_odds = next((o.get('price') for o in odds if o.get('name') == game_data['home']), 'N/A')
+                                    away_odds = next((o.get('price') for o in odds if o.get('name') == game_data['away']), 'N/A')
+                                else:
+                                    home_odds = odds.get('home', 'N/A')
+                                    away_odds = odds.get('away', 'N/A')
+                                
+                                game_data['odds'].append({
+                                    'bookmaker': bookmaker_name,
+                                    'home_odds': home_odds,
+                                    'away_odds': away_odds
+                                })
+                
+                games.append(game_data)
+            
+            # Sort games by time (earliest first)
+            games.sort(key=lambda x: x['date_local'])
+            
+            # Cache for 5 minutes
+            cache.set('nba_odds', games, 300)
+    
+    # Format today's date for display in Central Time
+    local_tz = pytz.timezone('America/Chicago')
+    now_local = datetime.now(local_tz)
+    
+    context = {
+        'games': games,
+        'today': now_local.strftime('%B %d, %Y'),
+        'current_time': now_local.strftime('%I:%M %p %Z'),
+    }
+    
+    return render(request, 'core/student_wagers.html', context)
+
+
+"""def nba_odds(request): 
     # Try to get from cache first
     games = cache.get('nba_odds')
     
@@ -92,7 +210,7 @@ def nba_odds(request):
                                     'bookmaker': bookmaker_name,
                                     'home_odds': home_odds,
                                     'away_odds': away_odds
-                                })
+                                     })
                 
                 games.append(game_data)
             
@@ -105,6 +223,42 @@ def nba_odds(request):
     }
     
     return render(request, 'core/student_wagers.html', context)
+
+import requests
+import os
+api_key = "58e1a2c878ba265addb081c6988e6d4e5e1d4dd42514b7220c2f5ad3e6ca70ce"
+def nba_odds(request):
+    games = cache.get('nba_odds')
+    if games is None:
+        games = []
+        response = requests.get(
+            'https://api.odds-api.io/v3/events',
+            params={
+                'apiKey': api_key,
+                'sport': 'basketball',
+                'league': 'usa-nba',
+                'from': '2026-03-29T00:00:00Z',    # Start of day
+                'to': '2026-03-29T23:59:59Z',
+            }
+        )
+        events = response.json()
+        for event in events:
+                    game_data = {
+                        'id': event.get('id'),
+                        'home': event.get('home'),
+                        'away': event.get('away'),
+                        'date': event.get('date'),
+                        'odds': []
+                    }
+                    games.append(game_data)
+                
+        #cache.set('nba_odds', games, 300)
+        context = {
+            'games': games,
+        }
+        
+    return render(request, 'core/student_wagers.html', context)"""
+
 
 def register_view(request):
     if request.method == "POST":
@@ -296,3 +450,91 @@ def edit_user(request, user_id):
         return redirect("admin_dashboard")
 
     return render(request, "core/edit_user.html", {"user_obj": user_obj})
+@login_required
+def student_rankings(request):
+    """
+    Shows all students where they rank compared to others.
+    Only shows usernames (not real names) and doesn't expose sensitive data.
+    """
+    
+    # Get all users with their wagering statistics
+    all_users_data = []
+    
+    for user in CustomUser.objects.all():
+        # Get all settled wagers for this user
+        wagers = Wager.objects.filter(user=user, settled_at__isnull=False)
+        
+        total_wagered = wagers.aggregate(total=Sum('amount'))['total'] or 0
+        total_payout = wagers.aggregate(total=Sum('payout'))['total'] or 0
+        net_profit = total_payout - total_wagered
+        
+        # Calculate win rate
+        winning_bets = wagers.filter(status='WON').count()
+        total_bets = wagers.count()
+        win_rate = (winning_bets / total_bets * 100) if total_bets > 0 else 0
+        
+        # Only include users who have placed at least one bet
+        if total_bets > 0:
+            all_users_data.append({
+                'user_id': user.id,
+                'username': user.username,
+                'total_wagered': float(total_wagered),
+                'total_payout': float(total_payout),
+                'net_profit': float(net_profit),
+                'bet_count': total_bets,
+                'winning_bets': winning_bets,
+                'losing_bets': total_bets - winning_bets,
+                'win_rate': round(win_rate, 1),
+            })
+    
+    # Sort by net profit (highest first) for ranking
+    all_users_data.sort(key=lambda x: x['net_profit'], reverse=True)
+    
+    # Add rank to each user
+    for idx, user_data in enumerate(all_users_data, 1):
+        user_data['rank'] = idx
+    
+    # Find current user's data and rank
+    current_user_data = None
+    current_user_rank = None
+    
+    for user_data in all_users_data:
+        if user_data['user_id'] == request.user.id:
+            current_user_data = user_data
+            current_user_rank = user_data['rank']
+            break
+    
+    # Get top 10 performers
+    top_10 = all_users_data[:10]
+    
+    # Prepare data for charts (limited to top 20 for readability)
+    chart_users = all_users_data[:20]
+    chart_labels = [user['username'] for user in chart_users]
+    chart_profits = [user['net_profit'] for user in chart_users]
+    chart_wagered = [user['total_wagered'] for user in chart_users]
+    chart_payouts = [user['total_payout'] for user in chart_users]
+    chart_win_rates = [user['win_rate'] for user in chart_users]
+    
+    # Calculate statistics
+    total_active_bettors = len(all_users_data)
+    average_profit = sum(u['net_profit'] for u in all_users_data) / total_active_bettors if total_active_bettors > 0 else 0
+    total_wagered_all = sum(u['total_wagered'] for u in all_users_data)
+    best_performer = all_users_data[0] if all_users_data else None
+    
+    context = {
+        'current_user_data': current_user_data,
+        'current_user_rank': current_user_rank,
+        'all_users_data': all_users_data,
+        'top_10': top_10,
+        'total_active_bettors': total_active_bettors,
+        'average_profit': average_profit,
+        'total_wagered_all': total_wagered_all,
+        'best_performer': best_performer,
+        'chart_labels': json.dumps(chart_labels),
+        'chart_profits': json.dumps(chart_profits),
+        'chart_wagered': json.dumps(chart_wagered),
+        'chart_payouts': json.dumps(chart_payouts),
+        'chart_win_rates': json.dumps(chart_win_rates),
+    }
+    
+    return render(request, 'core/student_rankings.html', context)
