@@ -1,22 +1,23 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Bulldog Bookie</title>
-  <link rel="stylesheet" href="homepage.css" />
+  <link rel="stylesheet" href="{% static 'core/events.css' %}" />
 </head>
 <body>
   <header class="header">
     <div class="container">
       <div class="logo">Bulldog Bookie</div>
       <nav class="nav">
-        <a href="homepage.html">Home</a>
-        <a href="events.html">Events</a>
-        <a href="wallet.html">Wallet</a>
-        <a href="wagers.html">Wagers</a>
-        <a href="admin.html">Admin</a>
-        <a href="login.html" class="btn">Login</a>
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'events' %}">Events</a>
+        <a href="{% url 'wallet' %}">Wallet</a>
+        <a href="{% url 'wagers' %}">Wagers</a>
+        <a href="{% url 'home' %}">Admin</a>
+        <a href="{% url 'home' %}" class="btn">Login</a>
       </nav>
     </div>
   </header>
@@ -29,21 +30,21 @@
 
   <section class="features">
   
-    <a href="events.html" class="feature-link">
+    <a href="{% url 'events' %}" class="feature-link">
       <div class="feature-card">
         <h2>Choose a Sport</h2>
         <p>Choose what sport you would like to place your wagers on!</p>
       </div>
     </a>
 
-    <a href="wagers.html" class="feature-link">
+    <a href="{% url 'wagers' %}" class="feature-link">
       <div class="feature-card">
         <h2>Track Wagers</h2>
         <p>View your current wagers and betting history.</p>
       </div>
     </a>
 
-    <a href="wallet.html" class="feature-link">
+    <a href="{% url 'wallet' %}" class="feature-link">
       <div class="feature-card">
         <h2>View Wallet</h2>
         <p>View your current balance.</p>
