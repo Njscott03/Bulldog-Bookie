@@ -17,6 +17,7 @@ comm==0.2.3
 debugpy==1.8.20
 decorator==5.2.1
 defusedxml==0.7.1
+dj-database-url==3.1.2
 Django==6.0.4
 djangorestframework==3.17.1
 djangorestframework_simplejwt==5.5.1
@@ -25,6 +26,7 @@ fastjsonschema==2.21.2
 fqdn==1.5.1
 gitdb==4.0.12
 GitPython==3.1.46
+gunicorn==25.3.0
 h11==0.16.0
 httpcore==1.0.9
 httpx==0.28.1
@@ -67,6 +69,7 @@ platformdirs==4.9.4
 prometheus_client==0.24.1
 prompt_toolkit==3.0.52
 psutil==7.2.2
+psycopg2-binary==2.9.12
 ptyprocess==0.7.0
 pure_eval==0.2.3
 pycparser==3.0
@@ -102,3 +105,4 @@ wcwidth==0.6.0
 webcolors==25.10.0
 webencodings==0.5.1
 websocket-client==1.9.0
+whitenoise==6.12.0

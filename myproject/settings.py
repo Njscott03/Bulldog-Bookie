@@ -11,7 +11,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # ------------------------------
 SECRET_KEY = 'django-insecure-*8ph+-3(ptagwyp_8gc-5$s_1w^8n5@5j(+z)n40ga2c#a^997'
 DEBUG = True
-ALLOWED_HOSTS = []  # Add your domain/IP when deploying
+ALLOWED_HOSTS = ['*']  # Add your domain/IP when deploying
+
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # ------------------------------
 # INSTALLED APPS
@@ -60,6 +64,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 # ------------------------------
@@ -148,3 +153,12 @@ CSRF_TRUSTED_ORIGINS = [
     'https://127.0.0.1:8000',
     'http://127.0.0.1:8000',
 ]
+
+import dj_database_url
+
+DATABASES = {
+    'default': dj_database_url.config(
+        default=f'sqlite:///{os.path.join(BASE_DIR, "db.sqlite3")}',
+        conn_max_age=600
+    )
+}
