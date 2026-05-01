@@ -159,7 +159,7 @@ def register_view(request):
         messages.success(request, "Account created successfully! Please log in.")
         return redirect("login")
 
-    return render(request, "core/register.html")
+    return render(request, "Frontend/createAccount.html")
 
 def login_view(request):
     if request.method == "POST":
@@ -175,7 +175,7 @@ def login_view(request):
 
         messages.error(request, "Invalid credentials.")
 
-    return render(request, "core/login.html")
+    return render(request, "Frontend/login.html")
 
 @login_required
 def logout_view(request):

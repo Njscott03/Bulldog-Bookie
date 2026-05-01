@@ -1,10 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Create Account • Bulldog Bookie</title>
-  <link rel="stylesheet" href="createAccount.css" />
+  <link rel="stylesheet" href="{% static 'core/createAccount.css' %}" />
 </head>
 <body>
   <header class="header">
@@ -15,8 +16,8 @@
         <a href="{% url 'events' %}">Events</a>
         <a href="{% url 'wallet' %}">Wallet</a>
         <a href="{% url 'wagers' %}">Wagers</a>
-        <a href="{% url 'home' %}">Admin</a>
-        <a href="{% url 'home' %}" class="btn">Login</a>
+        <a href="{% url 'admin' %}">Admin</a>
+        <a href="{% url 'login' %}" class="btn">Login</a>
       </nav>
     </div>
   </header>

@@ -18,7 +18,7 @@ urlpatterns = [
     path('rankings/', views.student_rankings, name='student_rankings'),
 
     # Admin
-    path('admin-dashboard/', views.admin_dashboard, name='admin_dashboard'),
+    path('admin-dashboard/', views.admin_dashboard, name='admin'),
     path('admin-dashboard/bookie/', views.admin_bookie_view, name='admin_bookie'),
     path('admin-dashboard/wagers/', views.admin_wagers_view, name='admin_wagers'),
     path('admin-dashboard/delete/<int:user_id>/', views.delete_user, name='delete_user'),
