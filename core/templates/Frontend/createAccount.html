@@ -16,8 +16,11 @@
         <a href="{% url 'events' %}">Events</a>
         <a href="{% url 'wallet' %}">Wallet</a>
         <a href="{% url 'wagers' %}">Wagers</a>
-        <a href="{% url 'admin' %}">Admin</a>
-        <a href="{% url 'login' %}" class="btn">Login</a>
+        {% if user.is_authenticated %}
+          <a href="{% url 'logout' %}" class="btn">Logout</a>
+        {% else %}
+          <a href="{% url 'login' %}" class="btn">Login</a>
+        {% endif %}
       </nav>
     </div>
   </header>
@@ -28,6 +31,7 @@
       <p>Create your Bulldog Bookie account to get started.</p>
 
       <form id="createForm" action="login.html" method="post" novalidate>
+        {% csrf_token %}
         <div class="form-group">
           <label for="firstName">First Name</label>
           <input id="firstName" name="firstName" type="text" autocomplete="given-name" required />

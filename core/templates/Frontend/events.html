@@ -16,15 +16,21 @@
         <a href="{% url 'events' %}">Events</a>
         <a href="{% url 'wallet' %}">Wallet</a>
         <a href="{% url 'wagers' %}">Wagers</a>
-        <a href="{% url 'admin' %}">Admin</a>
-        <a href="{% url 'login' %}" class="btn">Login</a>
+        {% if user.is_staff or user.is_superuser %}
+          <a href="{% url 'admin' %}">Admin</a>
+        {% endif %}
+        {% if user.is_authenticated %}
+          <a href="{% url 'logout' %}" class="btn">Logout</a>
+        {% else %}
+          <a href="{% url 'login' %}" class="btn">Login</a>
+        {% endif %}
       </nav>
     </div>
   </header>
 
   <main>
     <section class="events-hero">
-      <h1>Upcoming SEC Football Events</h1>
+      <h1>Upcoming NBA Football Events</h1>
       <p>
         Browse upcoming games, lines, and totals. Then head to the Wagers page
         to place your virtual bets and track your performance.

@@ -19,6 +19,7 @@ def is_admin_user(user):
 def home(request):
     return render(request, "Frontend/homepage.html")
 
+@login_required
 def wagers(request):
     return render(request, "Frontend/wagers.html")
 
@@ -170,8 +171,8 @@ def login_view(request):
         if user:
             login(request, user)
             if is_admin_user(user):
-                return redirect("admin_dashboard")
-            return redirect("student_dashboard")
+                return redirect("admin")
+            return redirect("events")
 
         messages.error(request, "Invalid credentials.")
 
@@ -254,7 +255,7 @@ def admin_dashboard(request):
     total_wagered = Wager.objects.aggregate(total=Sum("amount"))["total"] or 0
     bookie_profit = Wager.objects.aggregate(profit=Sum(F("payout") - F("amount")))["profit"] or 0
 
-    return render(request, "core/admin_dashboard.html", {
+    return render(request, "Frontend/admin.html", {
         "users": users,
         "total_users": total_users,
         "total_wallets": total_wallets,
