@@ -13,7 +13,7 @@ urlpatterns = [
     # Student
     path('student-dashboard/', views.student_dashboard, name='student_dashboard'),
     path('wallet/', views.wallet_view, name='wallet'),
-    path('events/', views.nba_odds, name='events'),
+    path('events/', views.mlb_odds, name='events'),
     path('wagers/', views.wagers, name='wagers'),
     path('rankings/', views.student_rankings, name='student_rankings'),
 

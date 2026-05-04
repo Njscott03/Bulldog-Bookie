@@ -1,26 +1,32 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login • Bulldog Bookie</title>
-    <link rel="stylesheet" href="{% static 'core/admin_dashboard.css' %}" />
-  </head>
-  <body>
-    <header class="header">
-      <div class="container">
-        <div class="logo">Bulldog Bookie</div>
-        <nav class="nav">
-          <a href="{% url 'home' %}">Home</a>
-          <a href="{% url 'wallet' %}">Wallet</a>
-          <a href="{% url 'wagers' %}">Wagers</a>
-          <a href="{% url 'student_rankings' %}">Rankings</a>
-          <a href="{% url 'admin_dashboard' %}">Admin</a>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wagers • Bulldog Bookie</title>
+  <link rel="stylesheet" href="{% static 'core/wagers.css' %}" />
+</head>
+<body>
+  <header class="header">
+    <div class="container">
+      <div class="logo">Bulldog Bookie</div>
+      <nav class="nav">
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'events' %}">Events</a>
+        <a href="{% url 'wallet' %}">Wallet</a>
+        <a href="{% url 'wagers' %}">Wagers</a>
+        {% if user.is_staff or user.is_superuser %}
+          <a href="{% url 'admin' %}">Admin</a>
+        {% endif %}
+        {% if user.is_authenticated %}
+          <a href="{% url 'logout' %}" class="btn">Logout</a>
+        {% else %}
           <a href="{% url 'login' %}" class="btn">Login</a>
-        </nav>
-      </div>
-    </header>
+        {% endif %}
+      </nav>
+    </div>
+  </header>
 
     <main>
       {% if messages %}

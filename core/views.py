@@ -3,9 +3,13 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.db.models import Sum, F
+from django.http import JsonResponse
 from .models import CustomUser, Wager
 from wallet.services import WalletService
 import json
+import requests
+import pytz
+from datetime import datetime, timedelta
 
 # ----------------------------
 # Helper Functions
@@ -23,127 +27,101 @@ def home(request):
 def wagers(request):
     return render(request, "Frontend/wagers.html")
 
-from django.shortcuts import render
-from django.core.cache import cache
-from datetime import datetime
 import requests
-from django.conf import settings
-from datetime import timedelta
-
-from django.utils import timezone
 import pytz
 from datetime import datetime, timedelta
+from django.core.cache import cache
+from django.shortcuts import render
+from django.conf import settings
 
-def nba_odds(request): 
-    # Try to get from cache first
-    games = cache.get('nba_odds')
+def get_league_odds(request, sport_slug, league_slug, days_ahead=14):
+    """
+    Generic function to fetch odds for any league
+    """
+    API_KEY = "58e1a2c878ba265addb081c6988e6d4e5e1d4dd42514b7220c2f5ad3e6ca70ce"
+    base_url = "https://api.odds-api.io/v3"
     
-    if games is None:
-        # If not in cache, fetch fresh data
-        import requests
-        from django.conf import settings
-        
-        API_KEY = settings.ODDS_API_KEY
-        base_url = "https://api.odds-api.io/v3"
-        
-        # Set timezone for Mississippi (Central Time)
-        local_tz = pytz.timezone('America/Chicago')
-        
-        # Get current time in Central Time
-        now_local = datetime.now(local_tz)
-        
-        # Set today and tomorrow in UTC for API request (API expects UTC)
-        today_utc = now_local.replace(hour=0, minute=0, second=0, microsecond=0).astimezone(pytz.UTC)
-        tomorrow_utc = today_utc + timedelta(days=2)  # Get next 2 days to catch late games
-        
-        events_response = requests.get(
-            f"{base_url}/events",
-            params={
-                'apiKey': API_KEY,
-                'sport': 'basketball',
-                'league': 'usa-nba',
-                'from': today_utc.isoformat().replace('+00:00', 'Z'),
-                'to': tomorrow_utc.isoformat().replace('+00:00', 'Z')
-            }
-        )
-        
-        games = []
-        if events_response.status_code == 200:
-            events = events_response.json()
-            for event in events:
-                # Convert API datetime (UTC) to Central Time for display
-                event_date_utc = datetime.fromisoformat(event.get('date').replace('Z', '+00:00'))
-                event_date_local = event_date_utc.astimezone(local_tz)
-                
-                # Only show games that are today or tonight (not past games)
-                # Show games from 6 AM today until 5 AM tomorrow (covers late night games)
-                start_of_day = now_local.replace(hour=6, minute=0, second=0, microsecond=0)
-                end_of_day = now_local + timedelta(days=1)
-                end_of_day = end_of_day.replace(hour=5, minute=0, second=0, microsecond=0)
-                
-                if event_date_local < start_of_day:
-                    continue  # Skip games from earlier today
-                
-                game_data = {
-                    'id': event.get('id'),
-                    'home': event.get('home'),
-                    'away': event.get('away'),
-                    'date_utc': event.get('date'),
-                    'date_local': event_date_local,  # Store as datetime object
-                    'time_local': event_date_local.strftime('%I:%M %p'),  # Format as 12-hour time
-                    'odds': []
-                }
-                
-                odds_response = requests.get(
-                    f"{base_url}/odds",
-                    params={
-                        'apiKey': API_KEY,
-                        'eventId': event.get('id'),
-                        'bookmakers': 'DraftKings,FanDuel,Bet365'
-                    }
-                )
-                
-                if odds_response.status_code == 200:
-                    odds_data = odds_response.json()
-                    bookmakers = odds_data.get('bookmakers', {})
-                    
-                    for bookmaker_name, markets in bookmakers.items():
-                        for market in markets:
-                            if market.get('name') == 'ML':
-                                odds = market.get('odds', {})
-                                
-                                if isinstance(odds, list):
-                                    home_odds = next((o.get('price') for o in odds if o.get('name') == game_data['home']), 'N/A')
-                                    away_odds = next((o.get('price') for o in odds if o.get('name') == game_data['away']), 'N/A')
-                                else:
-                                    home_odds = odds.get('home', 'N/A')
-                                    away_odds = odds.get('away', 'N/A')
-                                
-                                game_data['odds'].append({
-                                    'bookmaker': bookmaker_name,
-                                    'home_odds': home_odds,
-                                    'away_odds': away_odds
-                                })
-                
-                games.append(game_data)
-            
-            # Sort games by time (earliest first)
-            games.sort(key=lambda x: x['date_local'])
-            
-            # Cache for 5 minutes
-            cache.set('nba_odds', games, 300)
-    
-    # Format today's date for display in Central Time
+    # Set timezone for Central Time
     local_tz = pytz.timezone('America/Chicago')
     now_local = datetime.now(local_tz)
     
+    # Set date range
+    today_utc = now_local.replace(hour=0, minute=0, second=0, microsecond=0).astimezone(pytz.UTC)
+    future_utc = today_utc + timedelta(days=days_ahead)
+    
+    # Fetch events
+    events_response = requests.get(
+        f"{base_url}/events",
+        params={
+            'apiKey': API_KEY,
+            'sport': sport_slug,
+            'league': league_slug,
+            'from': today_utc.isoformat().replace('+00:00', 'Z'),
+            'to': future_utc.isoformat().replace('+00:00', 'Z')
+        }
+    )
+    
+    games = []
+    if events_response.status_code == 200:
+        events = events_response.json()
+        print(f"Found {len(events)} events for {league_slug}")
+        
+        for event in events:
+            # Convert date to local time
+            try:
+                event_date_utc = datetime.fromisoformat(event['date'].replace('Z', '+00:00'))
+                event_date_local = event_date_utc.astimezone(local_tz)
+            except (KeyError, ValueError, AttributeError):
+                continue
+            
+            game_data = {
+                'id': event.get('id'),
+                'home': event.get('home', 'Unknown'),
+                'away': event.get('away', 'Unknown'),
+                'date_local': event_date_local,
+                'time_local': event_date_local.strftime('%I:%M %p'),
+                'odds': []
+            }
+            
+            games.append(game_data)
+        
+        print(f"Processed {len(games)} games")
+    else:
+        print(f"API Error: {events_response.status_code} - {events_response.text}")
+    
+    # Get parameter from URL if needed (example)
+    # If you need to get a query parameter like ?filter=value:
+    # filter_value = request.GET.get('filter', 'default')
+    
     context = {
         'games': games,
-        'today': now_local.strftime('%B %d, %Y'),
-        'current_time': now_local.strftime('%I:%M %p %Z'),
+        'league_name': league_slug.replace('-', ' ').title(),
+        'today': datetime.now(pytz.timezone('America/Chicago')).strftime('%B %d, %Y'),
+        'current_time': datetime.now(pytz.timezone('America/Chicago')).strftime('%I:%M %p %Z'),
     }
-
+    
     return render(request, 'Frontend/events.html', context)
+
+def vietnam_football(request):
+    return get_league_odds(request, 'football', 'vietnam-v-league-2')
+
+# NBA Basketball
+def nba_odds(request):
+    return get_league_odds(request, 'basketball', 'usa-nba')
+
+# MLB Baseball
+def mlb_odds(request):
+    return get_league_odds(request, 'baseball', 'usa-mlb')
+
+# English Premier League
+def premier_league(request):
+    return get_league_odds(request, 'football', 'england-premier-league')
+
+# UEFA Champions League
+def champions_league(request):
+    return get_league_odds(request, 'football', 'uefa-champions-league')
+
+# You can add any league you want!
 
 
 def register_view(request):

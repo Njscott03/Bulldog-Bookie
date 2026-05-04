@@ -1,0 +1,278 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+img,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+:root {
+  --midnight: #0b0f19;
+  --deep-navy: #111a28;
+  --royal-blue: #0077ff;
+  --casino-red: #e02626;
+  --text-light: #f8f9fa;
+  --text-muted: #aeb7c1;
+  --border: #1f2633;
+  --card-bg: #101823;
+  --card-glow: rgba(0, 119, 255, 0.12);
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  --maxw: 1100px;
+  --radius: 18px;
+  --gap: 36px;
+  --btn-bg: var(--casino-red);
+  --btn-bg-hover: #b31f1f;
+  --btn-text: #ffffff;
+  --link: var(--royal-blue);
+  --link-hover: #339cff;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Poppins", "Segoe UI", sans-serif;
+  background: linear-gradient(180deg, #050810 0%, var(--midnight) 100%);
+  color: var(--text-light);
+  line-height: 1.6;
+  padding: 2rem;
+}
+
+a {
+  color: var(--link);
+  text-decoration: none;
+}
+a:hover {
+  color: var(--link-hover);
+  text-decoration: underline;
+}
+
+.container {
+  width: min(100% - 4rem, var(--maxw));
+  margin-inline: auto;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.9rem 1.4rem;
+  border-radius: 999px;
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  font-weight: 600;
+  text-decoration: none;
+  border: none;
+  box-shadow: 0 8px 20px rgba(214, 40, 40, 0.25);
+  transition: all 0.2s ease;
+}
+
+.btn:hover {
+  background: var(--btn-bg-hover);
+  transform: translateY(-2px);
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  backdrop-filter: blur(8px);
+  background: rgba(15, 20, 32, 0.9);
+  border-bottom: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem 2rem;
+  margin-bottom: 2rem;
+}
+
+.header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  width: 98%;
+  margin: 0 auto;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--royal-blue);
+  padding-left: 0.25rem;
+}
+
+.nav {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
+}
+
+.nav a {
+  color: var(--text-muted);
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.nav a:hover {
+  color: var(--text-light);
+}
+
+.nav .btn {
+  background: var(--casino-red);
+  color: #fff;
+  font-weight: 600;
+  padding: 0.5rem 1.2rem;
+  border-radius: 999px;
+  box-shadow: 0 0 15px rgba(214, 40, 40, 0.25);
+  transition: all 0.2s ease;
+}
+
+.nav .btn:hover {
+  background: #b31f1f;
+  transform: translateY(-2px);
+}
+
+.wagers-hero {
+  text-align: center;
+  margin-top: 3rem;
+  margin-bottom: 2rem;
+}
+
+.wagers-hero h1 {
+  font-size: clamp(2rem, 3vw, 2.4rem);
+  font-weight: 800;
+  margin-bottom: 0.25rem;
+}
+
+.wagers-hero p {
+  color: var(--text-muted);
+  max-width: 650px;
+  font-size: 1rem;
+  margin: 0.5rem auto 0;
+}
+
+.wagers-list {
+  margin-bottom: 3rem;
+}
+
+.wagers-card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  padding: 1.5rem 1.75rem;
+}
+
+.wagers-header {
+  display: grid;
+  grid-template-columns: 2.5fr 2.1fr 0.8fr 0.9fr 0.9fr;
+  column-gap: 1rem;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-bottom: 0.6rem;
+}
+
+.wager-row {
+  display: grid;
+  grid-template-columns: 2.5fr 2.1fr 0.8fr 0.9fr 0.9fr;
+  column-gap: 1rem;
+  padding: 0.75rem 0;
+  font-size: 0.95rem;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.wager-row:last-of-type {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.col.matchup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.tag.pending {
+  align-self: flex-start;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 119, 255, 0.35);
+  color: #79b3ff;
+  background: rgba(0, 119, 255, 0.08);
+}
+
+.col.odds,
+.col.risk,
+.col.win {
+  text-align: right;
+}
+
+.wagers-summary {
+  margin-top: 1.2rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.summary-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.summary-value {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-light);
+}
+
+@media (max-width: 800px) {
+  .wagers-card {
+    padding-inline: 1.1rem;
+  }
+
+  .wagers-header,
+  .wager-row {
+    grid-template-columns: 2.8fr 2.2fr 0.8fr;
+    row-gap: 0.3rem;
+  }
+
+  .wagers-header .risk,
+  .wagers-header .win,
+  .wager-row .risk,
+  .wager-row .win {
+    display: none;
+  }
+
+  .wager-row {
+    font-size: 0.9rem;
+  }
+
+  .wagers-summary {
+    justify-content: space-between;
+  }
+}

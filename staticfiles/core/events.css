@@ -1,0 +1,341 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+img,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+:root {
+  --midnight: #0b0f19;
+  --deep-navy: #111a28;
+  --royal-blue: #0077ff;
+  --casino-red: #e02626;
+  --text-light: #f8f9fa;
+  --text-muted: #aeb7c1;
+  --border: #1f2633;
+  --card-bg: #101823;
+  --card-glow: rgba(0, 119, 255, 0.12);
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  --maxw: 1100px;
+  --radius: 18px;
+  --gap: 36px;
+  --btn-bg: var(--casino-red);
+  --btn-bg-hover: #b31f1f;
+  --btn-text: #ffffff;
+  --link: var(--royal-blue);
+  --link-hover: #339cff;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Poppins", "Segoe UI", sans-serif;
+  background: linear-gradient(180deg, #050810 0%, var(--midnight) 100%);
+  color: var(--text-light);
+  line-height: 1.6;
+  padding: 2rem;
+}
+
+a {
+  color: var(--link);
+  text-decoration: none;
+}
+a:hover {
+  color: var(--link-hover);
+  text-decoration: underline;
+}
+
+.container {
+  width: min(100% - 4rem, var(--maxw));
+  margin-inline: auto;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.9rem 1.4rem;
+  border-radius: 999px;
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  font-weight: 600;
+  text-decoration: none;
+  border: none;
+  box-shadow: 0 8px 20px rgba(214, 40, 40, 0.25);
+  transition: all 0.2s ease;
+}
+
+.btn:hover {
+  background: var(--btn-bg-hover);
+  transform: translateY(-2px);
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  backdrop-filter: blur(8px);
+  background: rgba(15, 20, 32, 0.9);
+  border-bottom: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem 2rem;
+  margin-bottom: 2rem;
+}
+
+.header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  width: 98%;
+  margin: 0 auto;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--royal-blue);
+  padding-left: 0.25rem;
+}
+
+.nav {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
+}
+
+.nav a {
+  color: var(--text-muted);
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.nav a:hover {
+  color: var(--text-light);
+}
+
+.nav .btn {
+  background: var(--casino-red);
+  color: #fff;
+  font-weight: 600;
+  padding: 0.5rem 1.2rem;
+  border-radius: 999px;
+  box-shadow: 0 0 15px rgba(214, 40, 40, 0.25);
+  transition: all 0.2s ease;
+}
+
+.nav .btn:hover {
+  background: #b31f1f;
+  transform: translateY(-2px);
+}
+
+.events-hero {
+  padding: 70px 0 25px;
+  text-align: center;
+}
+
+.events-hero h1 {
+  font-size: 40px;
+  font-weight: 700;
+}
+
+.events-hero p {
+  color: var(--text-muted);
+  font-size: 17px;
+  margin-top: 8px;
+}
+
+.events-list {
+  padding: 20px 0 70px;
+  width: 90%;
+  margin: auto;
+}
+
+.event-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 30px;
+  margin: 22px 0;
+  box-shadow: var(--shadow);
+  transition: 0.25s ease;
+}
+
+.event-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--royal-blue);
+  box-shadow: 0 0 25px var(--card-glow);
+}
+
+.event-header {
+  margin-bottom: 18px;
+}
+
+.event-meta {
+  display: flex;
+  gap: 16px;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.event-location {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.event-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.event-teams {
+  display: flex;
+  justify-content: space-between;
+}
+
+.team {
+  display: flex;
+  flex-direction: column;
+}
+
+.team-name {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.team-tag {
+  margin-top: 4px;
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.07);
+  width: fit-content;
+}
+
+.favorite {
+  color: var(--royal-blue);
+  border-color: var(--royal-blue);
+}
+
+.event-odds {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 32px;
+}
+
+.odds-column {
+  min-width: 160px;
+  flex: 1;
+  max-width: 220px;
+}
+
+.odds-label {
+  display: block;
+  color: var(--text-muted);
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+.odds-btn {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: #15192a;
+  color: var(--text-light);
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.18s ease;
+}
+
+.odds-btn:first-of-type {
+  margin-top: 4px;
+}
+
+.odds-btn:hover {
+  border-color: var(--royal-blue);
+  box-shadow: 0 0 12px rgba(24, 123, 255, 0.35);
+}
+
+.odds-team {
+  font-weight: 600;
+}
+
+.odds-number,
+.odds-price {
+  font-weight: 500;
+  color: #27c46b;
+}
+
+.event-footer {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.event-note {
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.btn-view {
+  background: var(--royal-blue);
+  padding: 10px 22px;
+  border-radius: 10px;
+  font-weight: 600;
+  color: white;
+  text-decoration: none;
+  transition: 0.18s ease;
+}
+
+.btn-view:hover {
+  background: #0f5fcc;
+}
+
+@media (max-width: 900px) {
+  .event-odds {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .odds-column {
+    max-width: none;
+  }
+
+  .event-teams {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .event-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
